@@ -5,5 +5,5 @@
     <artifactId>TrabalhosINF623</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>03-RmiPublishSubscriber</artifactId>
+  <artifactId>06-WebServicesJgroup</artifactId>
 </project>
