@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>01-ThreadChat</name>
+	<name>01-ThreadProdutorConsumidor</name>
 	<comment></comment>
 	<projects>
 	</projects>
