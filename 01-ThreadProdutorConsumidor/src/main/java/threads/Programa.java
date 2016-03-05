@@ -15,10 +15,14 @@ public class Programa {
     
         int itemCount;
         ArrayList buffer;
-    
+        Semaphore consumerSemaphore;
+        Semaphore producerSemaphore;
+        
         Programa () {
             itemCount = 0;
             buffer = new ArrayList(); 
+            consumerSemaphore = new Semaphore(0);
+            producerSemaphore = new Semaphore(1);
         }
     
         int compartilhada;

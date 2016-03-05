@@ -22,6 +22,7 @@ public class Consumer extends Thread {
 
                try {
                    while (true) {
+                	   a.consumerSemaphore.down();
                        while (a.itemCount == 0)
                            sleep(100);
                        int item;
@@ -29,6 +30,7 @@ public class Consumer extends Thread {
                        a.buffer.remove(0);
                        a.itemCount--;
                        System.out.println("consumer: consuming item "+item);
+                       a.producerSemaphore.up();
                        for (int i =0;i<10000;i++);
                    }
 
