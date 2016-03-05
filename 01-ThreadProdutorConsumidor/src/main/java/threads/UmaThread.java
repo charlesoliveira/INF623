@@ -1,3 +1,4 @@
+package main.java.threads;
 class UmaThread extends Thread {
 
         private int delay;

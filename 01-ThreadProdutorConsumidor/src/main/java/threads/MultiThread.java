@@ -1,3 +1,4 @@
+package main.java.threads;
 public class MultiThread  {
 
         MultiThread () {
