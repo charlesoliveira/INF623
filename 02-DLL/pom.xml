@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>br.ifba.gsort</groupId>
-    <artifactId>TrabalhosINF623</artifactId>
+    <artifactId>INF623SistemasDistribuidos</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>02-DLL</artifactId>
