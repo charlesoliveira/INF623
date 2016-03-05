@@ -5,5 +5,5 @@
     <artifactId>INF623SistemasDistribuidos</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>ThreadChat</artifactId>
+  <artifactId>01-ThreadProdutorConsumidor</artifactId>
 </project>
