@@ -5,7 +5,7 @@ import java.rmi.registry.Registry;
 
 import common.DashBoardInterface;
 import common.SubscriberInterface;
-
+ 
 public class Subscriber implements SubscriberInterface {
 	/**
 	 * 
