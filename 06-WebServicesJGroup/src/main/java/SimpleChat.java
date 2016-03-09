@@ -1,28 +1,48 @@
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.jgroups.JChannel;
 import org.jgroups.Message;
 import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
+import org.jgroups.ViewId;
 import org.jgroups.util.Util;
-
-import java.io.*;
-import java.util.List;
-import java.util.LinkedList;
 
 public class SimpleChat extends ReceiverAdapter {
     JChannel channel;
     String user_name=System.getProperty("user.name", "n/a");
     final List<String> state=new LinkedList<String>();
+    ArrayList<String> jdbcList = new ArrayList<String>();
+    ViewId me; 
+    BancoDadosDAO dao;
 
     public void viewAccepted(View new_view) {
+    	me = new_view.getViewId();
+    	dao = new BancoDadosDAO(jdbcList.get(new_view.getMembers().indexOf(new_view) != -1 ? new_view.getMembers().indexOf(new_view) : 0));
+    	
+    	//int numer = ;
+    	//conexoes.put(new_view.getViewId(), new BancoDadosDAO(jdbcList.get(0)));
+    	
         System.out.println("** view: " + new_view);
     }
-
-    public void receive(Message msg) {
-        String line=msg.getSrc() + ": " + msg.getObject();
+    
+    public void receive(Message sql) {
+    	dao.executarSQL(sql.getObject().toString());
+    	
+        String line=sql.getSrc() + ": " + sql.getObject();
         System.out.println(line);
         synchronized(state) {
-            state.add(line);
+        	state.add(line);
         }
+        
     }
 
     public void getState(OutputStream output) throws Exception {
@@ -37,8 +57,12 @@ public class SimpleChat extends ReceiverAdapter {
         synchronized(state) {
             state.clear();
             state.addAll(list);
+            
+            for(String sql:list){
+            	dao.executarSQL(sql);
+            }
         }
-        System.out.println("received state (" + list.size() + " messages in chat history):");
+      //  System.out.println("received state (" + list.size() + " messages in chat history):");
         for(String str: list) {
             System.out.println(str);
         }
@@ -46,6 +70,12 @@ public class SimpleChat extends ReceiverAdapter {
 
 
     private void start() throws Exception {
+    	
+    	jdbcList.add("jdbc://localhost:5432/sa@12345");
+    	jdbcList.add("jdbc://localhost:5433/sa@12345");
+    	jdbcList.add("jdbc://localhost:5434/sa@12345");
+    	jdbcList.add("jdbc://localhost:5435/sa@12345");
+    	jdbcList.add("jdbc://localhost:5436/sa@12345");
         channel=new JChannel();
         channel.setReceiver(this);
         channel.connect("ChatCluster");
@@ -63,7 +93,6 @@ public class SimpleChat extends ReceiverAdapter {
                 if(line.startsWith("quit") || line.startsWith("exit")) {
                     break;
                 }
-                line="[" + user_name + "] " + line;
                 Message msg=new Message(null, null, line);
                 channel.send(msg);
             }
