@@ -1,0 +1,68 @@
+<!doctype html>
+<html ng-app>
+<head>
+<title>Hello AngularJS</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+<script src="hello.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+	crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+	crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+
+	<div ng-controller="Hello" class="col-sm-10 col-sm-push-1">
+<div class="page-header">
+  <h1>Jgroups!<small><BR>Execucao de sql distribuido</small></h1>
+</div>
+	
+		<div class="col-sm-12">
+			Query:
+			<form >
+				
+				<textarea rows="10" cols="130"></textarea>
+				<button type="button" class="btn btn-success">
+					<i class="glyphicon glyphicon-play"></i> Executar
+				</button>
+			</form>
+			<div class="col-sm-2" ng-repeat="(k,i) in instances">Instancia #{{k}}
+			
+			<div style="color: #00CC00;font-size: 13px;">
+				okok ok kokok kokoko kokokokokoko kok okok ok kokok kokoko kokokokokoko kokokok ok kokok kokoko kokokokokoko kok
+			</div>
+			
+			</div>
+		</div>
+	
+
+		<!--  <div ng-show="haserror" class="alert alert-danger" role="alert">
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Ocorreu um erro:</span> {{haserror}}
+		</div>
+		<div ng-show="hassuccess" class="alert alert-success" role="alert">
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Operaçao Realizada com Sucesso</span>
+		</div>-->
+		
+		
+	</div>
+</body>
+</html>

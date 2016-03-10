@@ -1,3 +1,4 @@
+package br.ifba.gsort.dao;
 import java.io.Serializable;
 
 

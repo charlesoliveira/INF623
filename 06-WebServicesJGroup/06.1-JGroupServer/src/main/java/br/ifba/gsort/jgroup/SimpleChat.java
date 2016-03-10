@@ -1,3 +1,4 @@
+package br.ifba.gsort.jgroup;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -16,6 +17,8 @@ import org.jgroups.View;
 import org.jgroups.ViewId;
 import org.jgroups.util.Util;
 
+import br.ifba.gsort.dao.BancoDadosDAO;
+
 public class SimpleChat extends ReceiverAdapter {
     JChannel channel;
     String user_name=System.getProperty("user.name", "n/a");
@@ -27,10 +30,6 @@ public class SimpleChat extends ReceiverAdapter {
     public void viewAccepted(View new_view) {
     	me = new_view.getViewId();
     	dao = new BancoDadosDAO(jdbcList.get(new_view.getMembers().indexOf(new_view) != -1 ? new_view.getMembers().indexOf(new_view) : 0));
-    	
-    	//int numer = ;
-    	//conexoes.put(new_view.getViewId(), new BancoDadosDAO(jdbcList.get(0)));
-    	
         System.out.println("** view: " + new_view);
     }
     

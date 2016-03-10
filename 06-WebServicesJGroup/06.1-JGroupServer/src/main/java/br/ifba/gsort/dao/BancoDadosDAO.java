@@ -1,3 +1,4 @@
+package br.ifba.gsort.dao;
 
 public class BancoDadosDAO implements IFBancoDadosDAO {
 	private String jdbc;
