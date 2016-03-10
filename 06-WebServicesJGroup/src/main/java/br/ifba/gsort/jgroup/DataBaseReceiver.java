@@ -76,8 +76,17 @@ public class DataBaseReceiver extends ReceiverAdapter {
 
 			for (IFMensagem mensagem : list) {
 				if (mensagem.getSql() !=null){
-					dao.executarSQL(mensagem.getSql());
+					String status = dao.executarSQL(mensagem.getSql());
 					System.out.println("> Carregando ID : " + mensagem.getId()+ ": " + mensagem.getSql());
+					if (status != Status.OK.getValue()){
+						Mensagem error = new Mensagem();
+						error.setStatus(status);
+						try {
+							this.channel.send(new Message(null, null, error));
+						} catch (Exception e) {				
+							e.printStackTrace();
+						}
+					}					
 				}
 				System.out.println("> Carregando ID : "  + ": " +  mensagem.getStatus());
 			}
