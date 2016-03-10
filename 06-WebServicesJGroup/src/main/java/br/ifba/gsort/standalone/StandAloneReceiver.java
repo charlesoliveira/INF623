@@ -13,7 +13,7 @@ import br.ifba.gsort.jgroup.Mensagem;
 
 public class StandAloneReceiver extends DataBaseReceiver {
 	
-	static final String jdbc = "jdbc:postgresql://localhost:5433/jgroup?user=postgres&password=postgres";
+	static final String jdbc = "jdbc:postgresql://localhost:5432/jgroup?user=postgres&password=postgres";
 	
 	public StandAloneReceiver() throws Exception {
 		super(new JChannel(), new BancoDadosDAO(jdbc));
