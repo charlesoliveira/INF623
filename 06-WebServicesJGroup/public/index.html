@@ -1,26 +1,23 @@
 <!doctype html>
-<html ng-app>
+<html ng-app="jGroupApp">
 <head>
-<title>Hello AngularJS</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-<script src="hello.js"></script>
+<title>Jgroups :: Execução de sql distribuido</title>
+<script src="jquery.min.js"></script>
+<script src="angular.min.js"></script>
+
 
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+<link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css"
 	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
 	crossorigin="anonymous">
 
 <!-- Optional theme -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+<link rel="stylesheet" href="./bootstrap/css/bootstrap-theme.min.css"
 	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
 	crossorigin="anonymous">
 
 <!-- Latest compiled and minified JavaScript -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+<script src="./bootstrap/js/bootstrap.min.js"
 	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
 	crossorigin="anonymous"></script>
 
@@ -30,39 +27,65 @@
 
 
 	<div ng-controller="Hello" class="col-sm-10 col-sm-push-1">
-<div class="page-header">
-  <h1>Jgroups!<small><BR>Execucao de sql distribuido</small></h1>
-</div>
-	
-		<div class="col-sm-12">
-			Query:
-			<form >
-				
-				<textarea rows="10" cols="130"></textarea>
-				<button type="button" class="btn btn-success">
-					<i class="glyphicon glyphicon-play"></i> Executar
-				</button>
-			</form>
-			<div class="col-sm-2" ng-repeat="(k,i) in instances">Instancia #{{k}}
-			
-			<div style="color: #00CC00;font-size: 13px;">
-				okok ok kokok kokoko kokokokokoko kok okok ok kokok kokoko kokokokokoko kokokok ok kokok kokoko kokokokokoko kok
-			</div>
-			
-			</div>
+		<div class="page-header">
+			<h1>
+				Jgroups!<small><BR>Execução de sql distribuido</small>
+			</h1>
 		</div>
-	
 
-		<!--  <div ng-show="haserror" class="alert alert-danger" role="alert">
-			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-			<span class="sr-only">Ocorreu um erro:</span> {{haserror}}
+
+		<div class="col-sm-12">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Consulta SQL</div>
+				<div class="panel-body">
+					<div ng-if="haserror" class="alert alert-danger" role="alert">
+						<span class="glyphicon glyphicon-exclamation-sign"
+							aria-hidden="true"></span> <span class="sr-only">Ocorreu
+							um erro:</span> {{haserror}}
+					</div>
+					<div ng-if="hassuccess" class="alert alert-success" role="alert">
+						<span class="glyphicon glyphicon-exclamation-sign"
+							aria-hidden="true"></span> <span class="sr-only">{{hassuccess}}</span>
+					</div>
+					<div class="form-group">
+						<textarea id="sqlConsole" rows="10" class="form-control"
+							ng-model="query"></textarea>
+					</div>
+					<div class="form-group" style="float: right;">
+						<button ng-enable="!instances" type="button"
+							ng-click="novaInstancia()" class="btn btn-primary">
+							<i class="glyphicon glyphicon-plus"></i> Nova instância
+						</button>
+						<button ng-enable="query" type="button" class="btn btn-success"
+							ng-click="execute()">
+							<i class="glyphicon glyphicon-play"></i> Executar Consulta
+						</button>
+					</div>
+				</div>
+				<div class="panel-footer">
+					<label>:: Em execução:</label>
+					<div class="form-group">
+						<div class="col-sm-4" ng-repeat="(k,i) in instances">
+							<label ng-if="k==0"><i class="glyphicon glyphicon-play"></i>
+								Coordenador</label> <label ng-if="k!=0">Instancia #{{k}}</label>
+							<button ng-if="k!=0" type="button" class="btn btn-xs btn-danger"
+								ng-click="stop(k-1)">
+								<i class="glyphicon glyphicon-stop"></i> Parar
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
 		</div>
-		<div ng-show="hassuccess" class="alert alert-success" role="alert">
-			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-			<span class="sr-only">Operaçao Realizada com Sucesso</span>
-		</div>-->
-		
-		
+
+
+
+
+
 	</div>
+	<script src="hello.js"></script>
 </body>
 </html>

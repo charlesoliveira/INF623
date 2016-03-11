@@ -7,22 +7,18 @@ import org.jgroups.JChannel;
 
 import br.ifba.gsort.dao.BancoDadosDAO;
 
-public class JCluster {
-	public static final String DEFAULT_NAME = "DataBaseCluster9999";
-	public static final int MAX_MEMBERS = 3;
-	JChannel channel;
+public class JCluster extends DataBaseReceiver{
+	public static final String DEFAULT_NAME = "DataBaseCluster9999xxx";
+	public static final int MAX_MEMBERS = 1;
 	
-	String[] jdbcList = new String[] { 
-			"jdbc:postgresql://localhost:5434/jgroup?user=postgres&password=postgres",
-			"jdbc:postgresql://localhost:5435/jgroup?user=postgres&password=postgres",
-			"jdbc:postgresql://localhost:5432/jgroup?user=postgres&password=postgres"
+	static String[] jdbcList = new String[] { 
+			"jdbc:postgresql://localhost:5433/jgroup?user=postgres&password=postgres",
+			"jdbc:postgresql://localhost:5434/jgroup?user=postgres&password=postgres"
 	};
 	List<DataBaseReceiver> lista = new ArrayList<DataBaseReceiver>();
 
 	public JCluster() throws Exception {
-		channel = new JChannel();
-		channel.connect(DEFAULT_NAME);
-		channel.getState(null, 10000);
+		super(DEFAULT_NAME, new BancoDadosDAO(jdbcList[0]));
 	}
 
 	public List<DataBaseReceiver> getLista() {
@@ -34,26 +30,21 @@ public class JCluster {
 	}
 
 	public void addDataBaseReceiver() throws Exception {
-		if (this.lista.size() <= MAX_MEMBERS){
-			
-			String jdbc = lista.isEmpty() ? jdbcList[0] : jdbcList[this.lista.size() - 1];
-			this.lista.add(new DataBaseReceiver(this.getChannel(), new BancoDadosDAO(jdbc)));
+		if (this.lista.size() < MAX_MEMBERS){
+
+			String jdbc = jdbcList[this.lista.size()+1];
+			DataBaseReceiver rec = new DataBaseReceiver(DEFAULT_NAME,new BancoDadosDAO(jdbc));
+			this.lista.add(rec);
+			rec.start();
 		}else{
 			System.err.println("Numero maximo de membros alcançados!!");
 			throw new Exception("Numero maximo de membros alcançados!!");
 		}
 	}
+	public void stopDataBaseReceiver(int index) throws Exception {
+		 this.lista.remove(index).stop();
+		
 
-	public void destroyMe() {
-		channel.close();
-	}
-
-	public JChannel getChannel() {
-		return channel;
-	}
-
-	public void setChannel(JChannel channel) {
-		this.channel = channel;
 	}
 
 	public String[] getJdbcList() {
@@ -65,6 +56,7 @@ public class JCluster {
 	}
 
 	
-
+	
+	
 
 }

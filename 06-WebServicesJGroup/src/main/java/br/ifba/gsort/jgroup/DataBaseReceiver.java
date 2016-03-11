@@ -21,16 +21,26 @@ public class DataBaseReceiver extends ReceiverAdapter {
 	
 	protected JChannel channel;
 	protected ViewId viewId;
+	protected String clusterName;
 	protected BancoDadosDAO dao;
-	protected String user_name = System.getProperty("user.name", "n/a");
 	protected final List<IFMensagem> state = new LinkedList<IFMensagem>();
 
-	public DataBaseReceiver(JChannel channel, BancoDadosDAO dao) {
-		this.channel = channel;
+	public DataBaseReceiver(String clusterName,BancoDadosDAO dao){
+		this.clusterName = clusterName;
 		this.dao = dao;
-		this.channel.setReceiver(this);
+		
 	}
-
+	
+	public synchronized void start() throws Exception {
+		this.channel = new JChannel();
+		this.channel.setReceiver(this);
+		this.channel.connect(clusterName);
+		this.channel.getState(null,5000);
+	}	
+	
+	public synchronized void stop(){
+		this.channel.close();
+	}
 	@Override
 	public void receive(Message msg) {
 		IFMensagem mensagem = (IFMensagem) msg.getObject();
@@ -47,13 +57,13 @@ public class DataBaseReceiver extends ReceiverAdapter {
 				}
 			}
 			
-			System.out.println(msg.getSrc() + "> Recebido ID : " + mensagem.getId()+ ": " + mensagem.getSql());
+			//System.out.println(msg.getSrc() + "> Recebido ID : " + mensagem.getId()+ ": " + mensagem.getSql());
 			
 			synchronized (state) {
 				state.add(mensagem);
 			}
 		}else{
-		System.out.println("> Respota ID : " + mensagem.getId() + ": " +  mensagem.getStatus());
+		//System.out.println("> Respota ID : " + mensagem.getId() + ": " +  mensagem.getStatus());
 		}
 		
 		
@@ -88,7 +98,7 @@ public class DataBaseReceiver extends ReceiverAdapter {
 						}
 					}					
 				}
-				System.out.println("> Carregando ID : "  + ": " +  mensagem.getStatus());
+			//	System.out.println("> Carregando ID : "  + ": " +  mensagem.getStatus());
 			}
 		}
 	
@@ -97,8 +107,12 @@ public class DataBaseReceiver extends ReceiverAdapter {
 	@Override
 	public void viewAccepted(View new_view) {
 		viewId = new_view.getViewId();
-		System.out.println("> Olá mundo! Sou o novo : " + new_view);
+		System.out.println("> Novo nó: " + new_view);
 
+	}
+	
+	public JChannel getChannel() {
+		return channel;
 	}
 
 }

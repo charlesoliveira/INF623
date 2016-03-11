@@ -17,11 +17,11 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-	@Bean(name = "cluster", destroyMethod = "destroyMe")
+	@Bean(name = "cluster", destroyMethod = "stop")
 	@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 	public JCluster configureClusterl() throws Exception {
 		JCluster cluster = new JCluster();
-		cluster.addDataBaseReceiver();
+		cluster.start();
 		return cluster;
 	}
 	

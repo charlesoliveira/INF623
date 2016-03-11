@@ -13,16 +13,13 @@ import br.ifba.gsort.jgroup.Mensagem;
 
 public class StandAloneReceiver extends DataBaseReceiver {
 	
-	static final String jdbc = "jdbc:postgresql://localhost:5432/jgroup?user=postgres&password=postgres";
+	static final String jdbc = "jdbc:postgresql://localhost:5435/jgroup?user=postgres&password=postgres";
 	
 	public StandAloneReceiver() throws Exception {
-		super(new JChannel(), new BancoDadosDAO(jdbc));
-		channel.connect(JCluster.DEFAULT_NAME);
-		channel.getState(null, 10000);
-		eventLoop();
-		channel.close();
+		super(JCluster.DEFAULT_NAME, new BancoDadosDAO(jdbc));
 	}
-
+	
+ 
 	private void eventLoop() {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		while (true) {
@@ -41,6 +38,9 @@ public class StandAloneReceiver extends DataBaseReceiver {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new StandAloneReceiver();
+		StandAloneReceiver rec  =new StandAloneReceiver();
+		rec.start();
+		rec.eventLoop();
+		rec.stop();
 	}
 }
