@@ -6,7 +6,7 @@ import java.rmi.registry.Registry;
 import common.DashBoardInterface;
 import common.PublisherInterface;
 
-public class Publisher implements PublisherInterface, Runnable {
+public class Publisher implements PublisherInterface {
 	public static final String serverAddress = "127.0.0.1";
 	public static final String serverPort = "3232";
 
@@ -49,10 +49,7 @@ public class Publisher implements PublisherInterface, Runnable {
 
 	}
 
-	public void run() {
-		
-
-	}
+	
 
 	static public void main(String args[]) {
 		Publisher publisher = new Publisher("TopicoCarros");

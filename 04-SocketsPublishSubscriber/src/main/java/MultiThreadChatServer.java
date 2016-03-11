@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MultiThreadChatServer {
 
@@ -13,7 +14,8 @@ public class MultiThreadChatServer {
 
 	static Socket clientSocket = null;
 	static ServerSocket serverSocket = null;
-	static ArrayList<String> subjects = new ArrayList<String>();
+	static ArrayList<String> topicos = new ArrayList<String>();
+	static HashMap<String, ArrayList<clientThread>> assinaturas = new HashMap<String, ArrayList<clientThread>>();
 
 	// This chat server can accept up to 10 clients' connections
 
@@ -53,7 +55,7 @@ public class MultiThreadChatServer {
 				clientSocket = serverSocket.accept();
 				for (int i = 0; i <= 9; i++) {
 					if (t[i] == null) {
-						(t[i] = new clientThread(clientSocket, t, subjects)).start();
+						(t[i] = new clientThread(clientSocket, t, topicos, assinaturas)).start();
 						break;
 					}
 				}
@@ -79,11 +81,14 @@ class clientThread extends Thread {
 	Socket clientSocket = null;
 	clientThread t[];
 	ArrayList<String> subjects;
+	HashMap<String, ArrayList<clientThread>> assinaturas;
 
-	public clientThread(Socket clientSocket, clientThread[] t, ArrayList<String> subjects) {
+	public clientThread(Socket clientSocket, clientThread[] t, ArrayList<String> subjects,
+			HashMap<String, ArrayList<clientThread>> assinaturas) {
 		this.clientSocket = clientSocket;
 		this.t = t;
 		this.subjects = subjects;
+		this.assinaturas = assinaturas;
 	}
 
 	public void run() {
@@ -108,12 +113,23 @@ class clientThread extends Thread {
 				if (line.startsWith("add")) {
 					subjects.add(line.split(" ")[1]);
 				}
-				if (line.startsWith("listall")) {
+				if (line.startsWith("list")) {
 					for (String assunto : subjects) {
-						this.os.println(assunto);
+						this.os.println(":: " + assunto);
 					}
 				}
-				
+				if (line.startsWith("register")) {
+					String topicToRegister = line.split(" ")[1];
+					ArrayList<clientThread> assinantes = assinaturas.get(topicToRegister);
+					if (assinantes == null) {
+						assinantes = new ArrayList<clientThread>();
+					}
+					assinantes.add(this);
+					assinaturas.put(topicToRegister, assinantes);
+					this.os.println(":: Voce assinou: " + topicToRegister);
+
+				}
+
 				for (int i = 0; i <= 9; i++) {
 					if (t[i] != null) {
 						t[i].os.println("<" + name + "> " + line);
@@ -152,18 +168,14 @@ class clientThread extends Thread {
 	}
 }
 /*
-public class DashBoard {
-w
-	private final ArrayList<String> subscribed = new ArrayList<String>();
-	private final ArrayList<String> subject = new ArrayList<String>();
-	private final Map<Integer, subscribed> dashboard = new HashMap();
-
-	public DashBoard(String titleSubject, String nameSubscribe) {
-		
-		if (this.subscribed.get(nameSubscribe) {
-			System.out.println("Você já esta escrito em uma lista");
-		} else {
-			this.subscribed.add(nameSubscribe);
-		}
-	}
-}*/
+ * public class DashBoard { w private final ArrayList<String> subscribed = new
+ * ArrayList<String>(); private final ArrayList<String> subject = new
+ * ArrayList<String>(); private final Map<Integer, subscribed> dashboard = new
+ * HashMap();
+ * 
+ * public DashBoard(String titleSubject, String nameSubscribe) {
+ * 
+ * if (this.subscribed.get(nameSubscribe) {
+ * System.out.println("Você já esta escrito em uma lista"); } else {
+ * this.subscribed.add(nameSubscribe); } } }
+ */
